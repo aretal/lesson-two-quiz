@@ -11,6 +11,7 @@
     .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #edf2f7; padding-bottom: 15px; }
     .header h1 { font-size: 1.4rem; color: #1a365d; margin-bottom: 5px; }
     .header p { font-size: 0.9rem; color: #4a5568; }
+    .designer-credit { font-size: 0.82rem; color: #3182ce; font-weight: 600; margin-top: 6px; }
     .progress-bar { width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
     .progress-fill { height: 100%; width: 0%; background: #3182ce; transition: width 0.3s ease; }
     .question-title { font-size: 1.1rem; font-weight: 600; color: #2d3748; margin-bottom: 15px; }
@@ -41,6 +42,7 @@
   <div class="header">
     <h1>ICT Grade 6 - Assessment (Week 2)</h1>
     <p>Unit 1: Lesson 2 - Future Technology</p>
+    <div class="designer-credit">Prepared by Web Designer: Asmaa Kamar Mohamed</div>
   </div>
   
   <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
@@ -71,8 +73,7 @@ const questions = [
   { q: "5. Which technology helps in teaching in an interactive way and consolidating information?", options: ["Digital footprint", "Switches", "Modem", "augmented reality"], answer: 3 },
   { q: "6. Headphones are worn to handle the technology of .........", options: ["Virtual reality", "Digital footprint", "the pirate", "Scanner"], answer: 0 },
   { q: "7. You can see atoms and insects larger than you using ......... technology.", options: ["Virtual reality", "Switches", "Modem", "router"], answer: 0 },
-  { q: "8. ......... technology improves the lives of people with disabilities.", options: ["Assistive technology", "Old technology", "Traditional technology", "Complex technology"], answer: 0 },
-  
+  { q: "8. ......... technology improves the lives of people with disabilities.", options: ["Assistive technology", "Old technology", "Traditional technology", "Complex technology"], answer: 0 }
 ];
 
 let currentIndex = 0;
@@ -111,24 +112,16 @@ function loadQuestion() {
   const container = document.getElementById("answerArea");
   container.innerHTML = "";
 
-  if (current.type === "written") {
-    container.innerHTML = `
-      <textarea id="writtenInput" placeholder="Type your answer here..."></textarea>
-      <button class="btn-submit" onclick="submitWritten()">Submit Answer</button>
-      <div class="model-answer" id="modelAns"><b>Model Answer:</b> ${current.modelAnswer}</div>
-    `;
-  } else {
-    const optionsDiv = document.createElement("div");
-    optionsDiv.className = "options";
-    current.options.forEach((opt, idx) => {
-      const btn = document.createElement("button");
-      btn.className = "option-btn";
-      btn.textContent = `${String.fromCharCode(65 + idx)}- ${opt}`;
-      btn.onclick = () => checkMCQ(idx, btn);
-      optionsDiv.appendChild(btn);
-    });
-    container.appendChild(optionsDiv);
-  }
+  const optionsDiv = document.createElement("div");
+  optionsDiv.className = "options";
+  current.options.forEach((opt, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "option-btn";
+    btn.textContent = `${String.fromCharCode(65 + idx)}- ${opt}`;
+    btn.onclick = () => checkMCQ(idx, btn);
+    optionsDiv.appendChild(btn);
+  });
+  container.appendChild(optionsDiv);
 }
 
 function checkMCQ(selectedIndex, btn) {
@@ -150,15 +143,6 @@ function checkMCQ(selectedIndex, btn) {
     playSound('wrong');
   }
   document.getElementById("nextBtn").style.display = "block";
-}
-
-function submitWritten() {
-  const val = document.getElementById("writtenInput").value.trim();
-  if (!val) return alert("Please type an answer first!");
-  document.getElementById("modelAns").style.display = "block";
-  document.getElementById("nextBtn").style.display = "block";
-  playSound('correct');
-  score++;
 }
 
 function nextQuestion() {
